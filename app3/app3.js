@@ -17,6 +17,14 @@ app.get('/users', function (req, res) { //localhost:8081/users
     });
 });
 
+app.get('/user/:name', function (req, res) { //localhost:8081/users
+    var name = req.params.name;
+    //console.log(name);
+    queryUser(function(err,result){
+        res.end(result);
+    }, name);
+});
+
 var server = app.listen(8081, function () {
     console.log('Server: Running');
 });
@@ -24,6 +32,18 @@ var server = app.listen(8081, function () {
 function queryAllUser(callback) {
     var json = '';
     connection.query('SELECT * FROM user',
+        function (err, rows, fields) {
+            if (err) throw err;
+
+            json = JSON.stringify(rows);
+
+            callback(null, json); //err, result
+        });
+}
+
+function queryUser(callback, name) {
+    var json = '';
+    connection.query("SELECT * FROM user WHERE name=?",name,
         function (err, rows, fields) {
             if (err) throw err;
 
