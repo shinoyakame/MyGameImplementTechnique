@@ -30,7 +30,7 @@ connection.query('INSERT INTO user SET ?',
         if(err) throw err;
 
         console.log(result);
-    })
+    });
 
 connection.end(function(err){ //async
     console.log('Terminated Connection');

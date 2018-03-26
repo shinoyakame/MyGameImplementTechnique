@@ -3,10 +3,10 @@ var app = express();
 var mysql = require('mysql');
 
 var connection = mysql.createConnection({
-    host:'localhost', 
-    user:'root', 
-    password:'123456',
-    database:'game1'
+    host:'cgmgameserver.cl9n0qwnzmby.ap-south-1.rds.amazonaws.com', 
+    user:'admin', 
+    password:'admin1234',
+    database:'cgmgameserver'
 });
 
 connection.connect(function (err) { //async
@@ -20,8 +20,27 @@ connection.connect(function (err) { //async
 app.get('/users', function (req, res) { //localhost:8081/users
     //res.end('hello it\'s me');
     queryAllUser(function(err,result){
+        res.end('fff');
+    });
+});
+
+app.get('user/add/user', function(req,res){
+
+    var name = req.query.name;
+    var pass = req.query.pass;
+
+    //var user = [[name,password];
+
+    var user = [
+        ['Aa','456789'],
+        ['Bb','456789'],
+        ['Cc','456789']
+    ];
+    InsertUser(user, function(err,result){
         res.end(result);
     });
+
+    res.end(name + pass);
 });
 
 app.get('/user/:name', function (req, res) { //localhost:8081/users
@@ -59,4 +78,22 @@ function queryUser(callback, name) {
             callback(null, json); //err, result
         });
 }
+
+function InsertUser(user,callback) {
+    var sql = 'INSERT INTO user(name, password) values ?';
+
+    connection.query(sql,[user],
+        function (err, rows, fields) {
+
+            var res = '[{"success":"true"}]';
+
+            if (err) {
+                res = '[{"success":"false"}]';
+                throw err;
+            }
+
+            callback(null, res);
+        });
+}
+
 
