@@ -5,7 +5,7 @@ var mysql = require('mysql');
 var connection = mysql.createConnection({
     host:'cgmgameserver.cl9n0qwnzmby.ap-south-1.rds.amazonaws.com', 
     user:'admin', 
-    password:'admin1234',
+    password:'*********',
     database:'cgmgameserver'
 });
 
